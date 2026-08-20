@@ -10,6 +10,7 @@ int main(int argc, char* argv[]) {
         std::cout << argv[0] << " {input} {output}\n";
         return 1;
     }
+
     std::ifstream file(argv[1], std::ios::binary);
     std::ostringstream ss;
     ss << file.rdbuf();
@@ -18,7 +19,6 @@ int main(int argc, char* argv[]) {
     file.close();
 
     countSymbols(buffer);
-    for (int i = 0; i < 256; i++) {
-        printf("[%02X] %d\n", i, symbolCounts[i]);
-    }
+
+    
 }
