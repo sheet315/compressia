@@ -3,5 +3,5 @@
 #include <cstdint>
 #include <array>
 
-extern std::array<uint64_t, 256> symbolCounts;
-void countSymbols(std::string_view filebuffer);
+std::array<uint64_t, 256> countSymbols(std::string_view filebuffer);
+std::array<std::pair<uint8_t, uint64_t>, 256> sortArray(std::array<uint64_t, 256>& symbolCounts);
