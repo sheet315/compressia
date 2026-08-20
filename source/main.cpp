@@ -18,7 +18,6 @@ int main(int argc, char* argv[]) {
     std::string buffer = ss.str();
     file.close();
 
-  
     std::array<uint64_t, 256> symbolCounts = countSymbols(buffer);
     std::array<std::pair<uint8_t, uint64_t>, 256> symbolPairs = sortArray(symbolCounts);
 
