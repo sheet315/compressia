@@ -140,7 +140,13 @@ int main(int argc, char* argv[]) {
     }
 
     for (size_t i = 0; i < 8; i++) {
-        out << ((bytecount >> (8 * i)) & 0xFF);
+        uint8_t b = (bytecount >> (8 * i)) & 0xFF;
+        out.write((const char*)&b, 1);
+    }
+
+    for (size_t i = 0; i < 8; i++) {
+        uint8_t b = (buffer.size() >> (8 * i)) & 0xFF;
+        out.write((const char*)&b, 1);
     }
 
     out.write(headerEnd.data(), headerEnd.size());

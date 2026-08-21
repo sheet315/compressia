@@ -3,7 +3,7 @@
 #include <cstdint>
 
 #define BUCKETCOUNT 65536
-#define ENTRYCOUNT  1048576
+#define ENTRYCOUNT  65535
 
 struct Entry {
     uint32_t position;
