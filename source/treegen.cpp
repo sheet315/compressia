@@ -44,3 +44,23 @@ Node genTree(std::vector<Node> nodes) {
 
     return nodes[0];
 }
+
+std::vector<uint8_t> serializeTree(Node& tree) {
+    std::vector<uint8_t> data;
+
+    if (tree.isLeaf) {
+        data.push_back(1);
+        data.push_back(tree.byte);
+        return data;
+    }
+
+    data.push_back(0);
+
+    std::vector<uint8_t> left = serializeTree(tree.children[0]);
+    std::vector<uint8_t> right = serializeTree(tree.children[1]);
+
+    data.insert(data.end(), left.begin(), left.end());
+    data.insert(data.end(), right.begin(), right.end());
+
+    return data;
+}
