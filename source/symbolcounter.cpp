@@ -28,8 +28,6 @@ std::array<std::pair<uint8_t, uint64_t>, 256> sortArray(std::array<uint64_t, 256
     return sorted;
 }
 
-
-
 std::vector<unsigned char> genHeader(std::array<std::pair<uint8_t, uint64_t>, 256>& symbolPairs) {
     std::vector<unsigned char> out = {'C', 'O', 'M', 'P', 'R', 'E', 'S', 'S', 'I', 'A', ' ', '1', '.', '0', '.', '0'};
 

@@ -2,8 +2,10 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 #include "../include/symbolcounter.hpp"
+#include "../include/treegen.hpp"
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
