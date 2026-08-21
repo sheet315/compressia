@@ -17,3 +17,6 @@ struct Node {
         isLeaf = _isLeaf;
     }
 };
+
+std::vector<Node> genNodes(std::array<std::pair<uint8_t, uint64_t>, 256>& symbols);
+Node genTree(std::vector<Node> nodes);

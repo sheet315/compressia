@@ -1,4 +1,5 @@
 #include <array>
+#include <string>
 
 #include "../include/treegen.hpp"
 
@@ -27,5 +28,19 @@ Node genTree(std::vector<Node> nodes) {
                 second = i;
             }
         }
+
+        Node parent(0, nodes[smallest].count + nodes[second].count, false);
+
+        parent.children.push_back(nodes[smallest]);
+        parent.children.push_back(nodes[second]);
+
+        if (smallest > second) {
+            std::swap(smallest, second);
+        }
+        nodes.erase(nodes.begin() + second);
+        nodes.erase(nodes.begin() + smallest);
+        nodes.push_back(parent);
     }
+
+    return nodes[0];
 }

@@ -23,7 +23,6 @@ int main(int argc, char* argv[]) {
     std::array<uint64_t, 256> symbolCounts = countSymbols(buffer);
     std::array<std::pair<uint8_t, uint64_t>, 256> symbolPairs = sortArray(symbolCounts);
 
-    for (size_t i = 0; i < 256; i++) {
-        printf("[%2X] : %llu\n", symbolPairs[i].first, symbolPairs[i].second);
-    }
+    std::vector<Node> nodes = genNodes(symbolPairs);
+    Node tree = genTree(nodes);
 }
