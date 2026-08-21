@@ -6,6 +6,7 @@
 
 #include "../include/symbolcounter.hpp"
 #include "../include/treegen.hpp"
+#include "../include/hash.hpp"
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
@@ -17,7 +18,46 @@ int main(int argc, char* argv[]) {
     std::ostringstream ss;
     ss << file.rdbuf();
 
-    std::string buffer = ss.str();
+    std::string buffer;
+
+    {
+        std::string fromFile = ss.str();
+        buffer.reserve(fromFile.size());
+
+        for (auto& bucket : buckets) {
+            bucket.head = UINT32_MAX;
+        }
+        for (auto& entry  : entries) {
+            entry.next = UINT32_MAX;
+            entry.valid = false;
+        }
+
+        size_t i = 0;
+
+        while (i < fromFile.size()) {
+            Match match = findMatch(fromFile, i);
+
+            if (match.length >= 3) {
+                buffer += (char)1;
+                buffer += (char)(match.distance & 0xFF);
+                buffer += (char)(match.distance >> 8);
+                buffer += (char)match.length;
+
+                for (size_t j = 0; j < match.length; j += 4) {
+                    addEntry(fromFile, i + j);
+                }
+
+                i += match.length;
+            } else {
+                buffer += (char)0;
+                buffer += fromFile[i];
+
+                addEntry(fromFile, i);
+
+                i++;
+            }
+        }
+    }
 
     uint64_t fsize = buffer.size();
     file.close();
