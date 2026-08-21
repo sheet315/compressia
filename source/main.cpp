@@ -18,15 +18,34 @@ int main(int argc, char* argv[]) {
     ss << file.rdbuf();
 
     std::string buffer = ss.str();
+
+    file.seekg(0, std::ios::end);
+    std::streamsize fsize = file.tellg();
+    file.seekg(0, std::ios::beg);
+
     file.close();
 
-    Node tree;
+    Node                         tree;
+    std::array<std::string, 256> codeLUT{};
 
     {
         std::array<uint64_t, 256>                     symbolCounts = countSymbols(buffer);
         std::array<std::pair<uint8_t, uint64_t>, 256> symbolPairs  = sortArray(symbolCounts);
         std::vector<Node>                             nodes        = genNodes(symbolPairs);
         tree = genTree(nodes);
+
+        for (size_t i = 0; i < 256; i++) {
+            if (symbolPairs[i].second == 0) continue;
+            std::string code   = "";
+            uint8_t     target = symbolPairs[i].first;
+
+            if (!getCode(tree, target, code)) {
+                std::cout << "some error happened while compressing data (could not find symbol in tree)\n";
+                return 1;
+            }
+
+            codeLUT[target] = code; 
+        }
     }
 
     std::vector<uint8_t> serialized = serializeTree(tree);
@@ -48,12 +67,7 @@ int main(int argc, char* argv[]) {
 
     while (index < buffer.size()) {
         char        c    = buffer[index];
-        std::string code = "";
-
-        if (!getCode(tree, c, code)) {
-            std::cout << "some error happened while compressing data (could not find symbol in tree)\n";
-            return 1;
-        }
+        std::string &code = codeLUT[(uint8_t)c];
 
         for (size_t i = 0; i < code.size(); i++) {
             if (count == 8) {
@@ -68,6 +82,8 @@ int main(int argc, char* argv[]) {
 
             count++;
         }
+
+        if (index % 150000 == 0) printf("compressed %llu bytes. %.2f%% done\r", index, ((double)index / (double)fsize) * 100.0);
 
         index++;
     }
