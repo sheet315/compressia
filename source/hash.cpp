@@ -38,7 +38,7 @@ Match findMatch(const std::string& data, size_t pos) {
     uint32_t entry = buckets[bucket].head;
     size_t   attempts = 0;
 
-    while (entry != UINT32_MAX && attempts < 4) {
+    while (entry != UINT32_MAX && attempts < 1) {
         if (!entries[entry].valid || entries[entry].position >= pos) {
             break;
         }

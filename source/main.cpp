@@ -14,14 +14,16 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::ifstream      file(argv[1], std::ios::binary);
-    std::ostringstream ss;
-    ss << file.rdbuf();
+    std::ifstream file(argv[1], std::ios::binary | std::ios::ate);
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    std::string fromFile(size, '\0');
+    file.read(fromFile.data(), size);
 
     std::string buffer;
 
     {
-        std::string fromFile = ss.str();
         buffer.reserve(fromFile.size());
 
         for (auto& bucket : buckets) {
