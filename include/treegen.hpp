@@ -23,3 +23,4 @@ struct Node {
 std::vector<Node> genNodes(std::array<std::pair<uint8_t, uint64_t>, 256>& symbols);
 Node genTree(std::vector<Node> nodes);
 std::vector<uint8_t> serializeTree(Node& tree);
+bool traverseTree(Node& node, uint8_t target, std::string& code);

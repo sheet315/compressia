@@ -64,3 +64,24 @@ std::vector<uint8_t> serializeTree(Node& tree) {
 
     return data;
 }
+
+bool traverseTree(Node& node, uint8_t target, std::string& code) {
+    if (node.isLeaf) {
+        return node.byte == target;
+    }
+
+    code.push_back('0');
+
+    if (traverseTree(node.children[0], target, code))
+        return true;
+
+    code.pop_back();
+    code.push_back('1');
+
+    if (traverseTree(node.children[1], target, code))
+        return true;
+
+    code.pop_back();
+
+    return false;
+}
