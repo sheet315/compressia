@@ -15,6 +15,12 @@ int main(int argc, char* argv[]) {
     }
 
     std::ifstream file(argv[1], std::ios::binary | std::ios::ate);
+
+    if (!file) {
+        std::cout << "file failed to open\n";
+        return 1;
+    }
+
     std::streamsize size = file.tellg();
     file.seekg(0, std::ios::beg);
 
