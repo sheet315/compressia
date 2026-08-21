@@ -17,12 +17,38 @@ int main(int argc, char* argv[]) {
     std::ostringstream ss;
     ss << file.rdbuf();
 
-    std::string buffer = ss.str();
+    std::string buffer;
 
-    file.seekg(0, std::ios::end);
-    std::streamsize fsize = file.tellg();
-    file.seekg(0, std::ios::beg);
+    {
+        std::string fromFile = ss.str();
+        
+        char    currentChar = 0;
+        uint8_t count       = 0;
 
+        for (size_t i = 0; i < fromFile.size(); i++) {
+            char c = fromFile[i];
+            if (c != currentChar && count == 0) {
+                currentChar = c;
+                count++;
+            } else if (c != currentChar || count == 255) {
+                buffer += currentChar;
+                buffer += (char)count;
+                currentChar = c;
+                count = 1;
+            } else {
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            buffer += currentChar;
+            buffer += (char)count;
+        }
+
+        std::cout << "rle gain: \nbefore: " << fromFile.size() << "\nafter:  " << buffer.size() << '\n'; 
+    }
+
+    uint64_t fsize = buffer.size();
     file.close();
 
     Node                         tree;
