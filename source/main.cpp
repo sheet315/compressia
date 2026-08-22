@@ -81,6 +81,7 @@ int main(int argc, char* argv[]) {
 
         for (size_t i = 0; i < 256; i++) {
             if (symbolPairs[i].second == 0) continue;
+            
             std::string code   = "";
             uint8_t     target = symbolPairs[i].first;
 
@@ -118,12 +119,12 @@ int main(int argc, char* argv[]) {
             if (count == 8) {
                 databytes.push_back(byte);
                 count = 0;
-                byte = 0;
+                byte  = 0;
                 bytecount++;
             }
 
             byte <<= 1;
-            byte |= (code[i] == '0' ? 0 : 1);
+            byte  |= (code[i] == '0' ? 0 : 1);
 
             count++;
         }

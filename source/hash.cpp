@@ -15,8 +15,7 @@ void addEntry(const std::string& data, size_t pos) {
         return;
     }
 
-    uint32_t h = hash(data[pos], data[pos + 1], data[pos + 2]);
-
+    uint32_t h      = hash(data[pos], data[pos + 1], data[pos + 2]);
     uint32_t bucket = h % BUCKETCOUNT;
     uint32_t entry  = pos & (ENTRYCOUNT - 1);
 
@@ -33,12 +32,12 @@ Match findMatch(const std::string& data, size_t pos) {
         return best;
     }
 
-    uint32_t h = hash(data[pos], data[pos + 1], data[pos + 2]);
-    uint32_t bucket = h % BUCKETCOUNT;
-    uint32_t entry = buckets[bucket].head;
+    uint32_t h        = hash(data[pos], data[pos + 1], data[pos + 2]);
+    uint32_t bucket   = h % BUCKETCOUNT;
+    uint32_t entry    = buckets[bucket].head;
     size_t   attempts = 0;
 
-    while (entry != UINT32_MAX && attempts < 1) {
+    while (entry != UINT32_MAX && attempts < 2) {
         if (!entries[entry].valid || entries[entry].position >= pos) {
             break;
         }
@@ -55,7 +54,7 @@ Match findMatch(const std::string& data, size_t pos) {
         }
 
         if (length > best.length) {
-            best.length = length;
+            best.length   = length;
             best.distance = pos - candidate;
 
             if (best.length == 255) {
